@@ -1,0 +1,46 @@
+spring:
+  application.name: ${project.name}
+
+server.shutdown: graceful
+
+management:
+  info:
+    env.enabled: true
+    git:
+      enabled: true
+      mode: "full"
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "health,info"
+  endpoint:
+    info:
+      enabled: true
+    health:
+#      show-details: "always"
+      group:
+        readiness:
+          show-details: "always"
+          include:
+            - readinessState
+            - readinessConfiguration
+      enabled: true
+      probes:
+        enabled: true
+      status:
+        order: "down,out-of-service,unknown,up"
+        http-mapping:
+          down: 503
+          out-of-service: 503
+          unknown: 503
+          up: 200
+
+info:
+  app:
+    application-name: ${project.name}
+    group: ${project.group}
+    version: ${project.version}
+    java:
+      source: ${java.sourceCompatibility}
+      target: ${java.targetCompatibility}
